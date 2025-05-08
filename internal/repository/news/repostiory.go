@@ -52,7 +52,8 @@ func (r *Repository) SelectNews(ctx context.Context) (news models.News, err erro
 			id,
 			title,
 			content,
-			image_url
+			image_url,
+			created_at
 		FROM content.news
 	`
 
