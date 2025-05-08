@@ -1,6 +1,10 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type (
 	News []New
@@ -9,7 +13,7 @@ type (
 		Title     string    `json:"title" db:"title"`
 		Content   string    `json:"content" db:"content"`
 		ImageURL  string    `json:"image_url,omitempty" db:"image_url"`
-		CreatedAt int64     `json:"created_at" db:"created_at"`
+		CreatedAt time.Time `json:"created_at" db:"created_at"`
 	}
 	PostNewRequest struct {
 		Title   string `json:"title"`
