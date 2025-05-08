@@ -34,7 +34,7 @@ func Run(ctx context.Context, cfg *config.Config) (err error) {
 		return err
 	}
 
-	service := service.New(repo, txManager, storage)
+	service := service.New(cfg.Services, repo, txManager, storage)
 
 	handler := binder.NewHandler(service)
 

@@ -23,7 +23,7 @@ func New(db *sqlx.DB, ctxGetter *trmsqlx.CtxGetter) *Repository {
 
 func (r *Repository) InsertDocumnets(ctx context.Context, documents entities.DocumentBatch) (err error) {
 	query := `
-		INSERT INTO profkom.documents(
+		INSERT INTO content.documents(
 			id,
 			url,
 			title,
@@ -57,7 +57,7 @@ func (r *Repository) SelectDocuments(ctx context.Context) (documents []entities.
 		SELECT 
 			*
 		FROM 
-			profkom.documents
+			content.documents
 	`
 
 	err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).SelectContext(
@@ -74,7 +74,7 @@ func (r *Repository) SelectDocuments(ctx context.Context) (documents []entities.
 
 func (r *Repository) DeleteDocument(ctx context.Context, id uuid.UUID) (err error) {
 	query := `
-		DELETE FROM profkom.documents WHERE id = $1
+		DELETE FROM content.documents WHERE id = $1
 	`
 	_, err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).ExecContext(
 		ctx,

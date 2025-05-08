@@ -25,7 +25,7 @@ func New(db *sqlx.DB, ctxGetter *trmsqlx.CtxGetter) *Repository {
 
 func (r *Repository) InsertUser(ctx context.Context, user *entities.User) (err error) {
 	query := `
-		INSERT INTO profkom."user" (
+		INSERT INTO auth."user" (
 			role,
 			login,
 			password
@@ -55,7 +55,7 @@ func (r *Repository) CheckUserExist(ctx context.Context, login string) (exist bo
 	query := `
 		select exists(
 				select 1
-				from profkom."user"
+				from auth."user"
 				where 
 					login = $1 
 			) as result
@@ -77,7 +77,7 @@ func (r *Repository) CheckInviteToken(ctx context.Context, inviteToken string) (
 	query := `
 		SELECT
 		 	role
-		FROM profkom.invite_token
+		FROM auth.invite_token
 		WHERE
 			content = $1 AND used = false
 	`
@@ -96,7 +96,7 @@ func (r *Repository) CheckInviteToken(ctx context.Context, inviteToken string) (
 	}
 
 	query = `
-		UPDATE profkom.invite_token SET used = true
+		UPDATE auth.invite_token SET used = true
 	`
 
 	_, err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).ExecContext(
@@ -112,7 +112,7 @@ func (r *Repository) CheckInviteToken(ctx context.Context, inviteToken string) (
 
 func (r *Repository) InsertInviteToken(ctx context.Context, token *entities.InviteToken) (err error) {
 	query := `
-		INSERT INTO profkom.invite_token(
+		INSERT INTO auth.invite_token(
 			content,
 			role
 		) VALUES (
@@ -139,7 +139,7 @@ func (r *Repository) SelectUserByLogin(ctx context.Context, login string) (user 
 	query := `
 		SELECT
 		*
-		FROM profkom."user"
+		FROM auth."user"
 		WHERE login = $1;
 	`
 

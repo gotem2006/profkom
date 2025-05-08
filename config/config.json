@@ -18,6 +18,11 @@
       "Key": "YCAJEjh8P8ttT2kFrqyQS6mnM",
       "Secret": "YCPMI9dmM3B7s4tPgHRziMP1gZTwc-brjhbAsCSC",
       "Region": "ru"
-    }
-      
+    },
+    "Services": {
+      "Auth": {
+        "JwtHashKey": "asdqwe2131241eqeqw",
+        "S3ImageUrl": "https://storage.yandexcloud.net/profkom-dev"
+      }
+    }      
 }

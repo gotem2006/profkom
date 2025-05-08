@@ -12,7 +12,7 @@ type (
 		CreatedAt int64     `json:"created_at" db:"created_at"`
 	}
 	PostNewRequest struct {
-		Title  string `json:"title"`
+		Title   string `json:"title"`
 		Content string `json:"content"`
 		Image   File   `json:"image"`
 	}

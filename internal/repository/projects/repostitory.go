@@ -32,7 +32,7 @@ func (r *Repository) SelectProjects(ctx context.Context) (result models.GetProje
 			description,
 			image_url
 		FROM
-			profkom.projects
+			content.projects
 	`
 
 	var projects models.Projects
@@ -68,7 +68,7 @@ func (r *Repository) SelectProject(ctx context.Context, id uuid.UUID) (result mo
 			description,
 			image_url
 		FROM
-			profkom.projects
+			content.projects
 		WHERE id = $1
 	`
 
@@ -87,7 +87,7 @@ func (r *Repository) SelectProject(ctx context.Context, id uuid.UUID) (result mo
 
 func (r *Repository) InsertProject(ctx context.Context, project entities.Project) (err error) {
 	query := `
-		INSERT INTO profkom.projects (
+		INSERT INTO content.projects (
 			id,
 			intro,
 			title,
@@ -123,7 +123,7 @@ func (r *Repository) InsertProject(ctx context.Context, project entities.Project
 
 func (r *Repository) DeleteProject(ctx context.Context, id uuid.UUID) (err error) {
 	query := `
-		DELETE FROM profkom.projects WHERE id = $1
+		DELETE FROM content.projects WHERE id = $1
 	`
 	_, err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).ExecContext(
 		ctx,

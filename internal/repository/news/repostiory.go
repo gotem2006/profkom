@@ -29,7 +29,7 @@ func (r Repository) SelectNew(ctx context.Context, id uuid.UUID) (new models.New
 			title,
 			content,
 			image_url
-		FROM profkom.news
+		FROM content.news
 		WHERE id = $1
 	`
 
@@ -53,7 +53,7 @@ func (r *Repository) SelectNews(ctx context.Context) (news models.News, err erro
 			title,
 			content,
 			image_url
-		FROM profkom.news
+		FROM content.news
 	`
 
 	err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).SelectContext(
@@ -70,7 +70,7 @@ func (r *Repository) SelectNews(ctx context.Context) (news models.News, err erro
 
 func (r *Repository) InsertNew(ctx context.Context, new *entities.New) (err error) {
 	query := `
-		INSERT INTO profkom.news(
+		INSERT INTO content.news(
 			id,
 			title,
 			content,

@@ -1,10 +1,14 @@
 package auth
 
 import (
+	"errors"
+	"io"
 	"profkom/internal/models"
 	"profkom/internal/service/auth"
+	"profkom/pkg/consts"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/valyala/fasthttp"
 )
 
 type Handler struct {
@@ -60,4 +64,48 @@ func (h *Handler) SignIn(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(resp)
+}
+
+func (h *Handler) EnrichProfile(c *fiber.Ctx) error {
+	user, ok := c.Locals(consts.UserContextKey).(*models.ClaimsJwt)
+	if !ok {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	request := models.EnrichProfileRequest{
+		UserID:     user.UserID,
+		FirstName:  c.FormValue("first_name"),
+		Secondname: c.FormValue("second_name"),
+		Patronymic: c.FormValue("patronymic"),
+	}
+
+	file, err := c.FormFile("image")
+	if err == nil {
+		f, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		fileBytes, err := io.ReadAll(f)
+		if err != nil {
+			return err
+		}
+
+		request.Image = &models.File{
+			Filename: file.Filename,
+			Bytes:    fileBytes,
+		}
+	} else {
+		if !errors.Is(err, fasthttp.ErrMissingFile) {
+			return err
+		}
+	}
+
+	err = h.service.EnrichUserProfile(c.Context(), request)
+	if err != nil {
+		return err
+	}
+
+	return err
 }

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"profkom/internal/repository/auth"
+	"profkom/internal/repository/chat"
 	"profkom/internal/repository/documents"
 	"profkom/internal/repository/guide"
 	"profkom/internal/repository/news"
@@ -17,6 +18,7 @@ type Repository struct {
 	News      *news.Repository
 	Auth      *auth.Repository
 	Documents *documents.Repository
+	Chat      *chat.Repository
 }
 
 func New(db *sqlx.DB, ctxGetter *trmsqlx.CtxGetter) *Repository {
@@ -26,5 +28,6 @@ func New(db *sqlx.DB, ctxGetter *trmsqlx.CtxGetter) *Repository {
 		News:      news.New(db, ctxGetter),
 		Auth:      auth.New(db, ctxGetter),
 		Documents: documents.New(db, ctxGetter),
+		Chat:      chat.New(db, ctxGetter),
 	}
 }

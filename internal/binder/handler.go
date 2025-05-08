@@ -2,6 +2,7 @@ package binder
 
 import (
 	"profkom/internal/binder/auth"
+	"profkom/internal/binder/chat"
 	"profkom/internal/binder/documents"
 	"profkom/internal/binder/guide"
 	"profkom/internal/binder/news"
@@ -15,6 +16,7 @@ type Handler struct {
 	News      *news.Handler
 	Auth      *auth.Handler
 	Documents *documents.Handler
+	Chat      *chat.Handler
 }
 
 func NewHandler(service *service.Service) *Handler {
@@ -24,5 +26,6 @@ func NewHandler(service *service.Service) *Handler {
 		News:      news.New(service.News),
 		Auth:      auth.New(service.Auth),
 		Documents: documents.New(service.Documents),
+		Chat:      chat.New(service.Chat),
 	}
 }

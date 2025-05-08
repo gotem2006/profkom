@@ -1,6 +1,9 @@
 package binder
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
+)
 
 type Binder struct {
 	app     *fiber.App
@@ -35,6 +38,8 @@ func (b *Binder) mapAdmin() {
 		auth.Post("/sign-in", b.handler.Auth.SignIn)
 
 		auth.Post("/token", b.mw.Auth, b.handler.Auth.PostInviteToken)
+
+		auth.Post("/enrich-profile", b.mw.Auth, b.handler.Auth.EnrichProfile)
 	}
 
 	{
@@ -68,6 +73,14 @@ func (b *Binder) mapAdmin() {
 		documents.Post("/", b.mw.Auth, b.handler.Documents.PostDocument)
 
 		documents.Delete("/:document_id", b.mw.Auth, b.handler.Documents.DeleteDocument)
+	}
+
+	{
+		chat := v1.Group("/chat")
+
+		chat.Get("/", b.mw.Auth, b.handler.Chat.GetChats)
+
+		chat.Get("/ws/:chat_id", b.mw.Auth, websocket.New(b.handler.Chat.HandleConnection))
 	}
 }
 

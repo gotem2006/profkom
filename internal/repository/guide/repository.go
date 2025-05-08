@@ -26,7 +26,7 @@ func (r *Repository) SelectGuide(ctx context.Context) (result models.AllGuides, 
 			id,
 			title
 		FROM
-			profkom.guides
+			guides.guides
 		WHERE 
 			type = 'worker' 
 	`
@@ -47,7 +47,7 @@ func (r *Repository) SelectGuide(ctx context.Context) (result models.AllGuides, 
 			title,
 			content
 		FROM
-			profkom.themes
+			guides.themes
 		WHERE 
 			guide_id = $1 
 	`
@@ -75,7 +75,7 @@ func (r *Repository) SelectGuide(ctx context.Context) (result models.AllGuides, 
 			id,
 			title
 		FROM
-			profkom.guides
+			guides.guides
 		WHERE 
 			type = 'student' 
 	`
@@ -96,7 +96,7 @@ func (r *Repository) SelectGuide(ctx context.Context) (result models.AllGuides, 
 			title,
 			content
 		FROM
-			profkom.themes
+			guides.themes
 		WHERE 
 			guide_id = $1 
 	`
@@ -124,7 +124,7 @@ func (r *Repository) SelectGuide(ctx context.Context) (result models.AllGuides, 
 
 func (r *Repository) InsertGuide(ctx context.Context, guideType string, guides []models.Guide) (err error) {
 	query := `
-		INSERT INTO profkom.guides  (
+		INSERT INTO guides.guides  (
 			title,
 			type
 		) VALUES(
@@ -134,7 +134,7 @@ func (r *Repository) InsertGuide(ctx context.Context, guideType string, guides [
 	`
 
 	themesQuery := `
-		INSERT INTO profkom.themes  (
+		INSERT INTO guides.themes  (
 			title,
 			content,
 			guide_id
@@ -185,7 +185,7 @@ func (r *Repository) InsertGuide(ctx context.Context, guideType string, guides [
 
 func (r *Repository) DeleteGuide(ctx context.Context, id int) (err error) {
 	query := `
-		DELETE FROM profkom.guides WHERE id = $1
+		DELETE FROM guides.guides WHERE id = $1
 	`
 
 	_, err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).ExecContext(
@@ -200,9 +200,9 @@ func (r *Repository) DeleteGuide(ctx context.Context, id int) (err error) {
 	return err
 }
 
-func (r *Repository) DeleteTheme(ctx context.Context, id int) (err error){
+func (r *Repository) DeleteTheme(ctx context.Context, id int) (err error) {
 	query := `
-		DELETE FROM profkom.themes WHERE id = $1
+		DELETE FROM guides.themes WHERE id = $1
 	`
 
 	_, err = r.ctxGetter.DefaultTrOrDB(ctx, r.db).ExecContext(
